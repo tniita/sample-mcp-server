@@ -2,6 +2,6 @@ from fastapi import FastAPI
 
 app = FastAPI()
 
-@app.get("/sample")
+@app.get("/")
 async def root():
     return {"message": "Hello MCP Server"}
