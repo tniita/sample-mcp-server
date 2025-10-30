@@ -10,7 +10,6 @@ def sse_generator():
         time.sleep(2)
         yield f"event: ping\ndata: still alive\n\n"
 
-@app.get("/mcp/messages")
+@app.get("/mcp/")
 async def mcp_messages():
-    return StreamingResponse(sse_generator(), media_type="text/event-stream"
-    )
+    return "Hello World"
