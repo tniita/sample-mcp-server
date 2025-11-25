@@ -5,7 +5,7 @@ from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
-@app.post("/mcp/tools/echo")  # 例: ツール呼び出し用の POST
+@app.post("/tools/echo")  # 例: ツール呼び出し用の POST
 async def mcp_tool_echo(req: Request):
     # リクエストの id を返すのが JSON-RPC では自然（なければ適当に 1）
     try:
@@ -22,7 +22,7 @@ async def mcp_tool_echo(req: Request):
         return JSONResponse(content=payload, media_type="application/json")
     
     except Exception:
-        # JSON-RPC の error 形式で返す
+        # JSON-RPC  の error 形式で返す
         payload = {
             "jsonrpc": "2.0",
             "id": None,
