@@ -1,15 +1,30 @@
 from fastapi import FastAPI
-from fastapi.responses import StreamingResponse
-import time
+from fastapi import Request
+from fastapi.responses import JSONResponse
+
 
 app = FastAPI()
 
-def sse_generator():
-    yield "event: message\ndata: Hello MCP Server\n\n"
-    while True:
-        time.sleep(2)
-        yield f"event: ping\ndata: still alive\n\n"
-
-@app.get("/mcp/")
-async def mcp_messages():
-    return "Hello World"
+@app.post("/mcp/tools/echo")  # 例: ツール呼び出し用の POST
+async def mcp_tool_echo(req: Request):
+    # リクエストの id を返すのが JSON-RPC では自然（なければ適当に 1）
+    try:
+        body = await req.json()
+        req_id = body.get("id", 1)
+        # ここでは固定文字列 "Hello World" を MCP の result に包んで返す
+        payload = {
+            "jsonrpc": "2.0",
+            "id": req_id,
+            "result": {
+                "output": "Hello World"
+            }
+        }
+        return JSONResponse(content=payload, media_type="application/json")
+    
+    except Exception:
+        # JSON-RPC の error 形式で返す
+        payload = {
+            "jsonrpc": "2.0",
+            "id": None,
+            "error": {"code": -32600, "message": "Invalid Request"}
+        }
