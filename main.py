@@ -13,12 +13,22 @@ async def mcp_tool_echo(req: Request):
         req_id = body.get("id", 1)
         # ここでは固定文字列 "Hello World" を MCP の result に包んで返す
         payload = {
-            "jsonrpc": "2.0",
-            "id": req_id,
-            "result": {
-                "output": "Hello World"
+          "jsonrpc": "2.0",
+          "id": "1",
+          "result": {
+            "content": [
+              {
+                "type": "text",
+                "text": "Search results for 'Azure API Management MCP integration': ..."
+              }
+            ],
+            "metadata": {
+              "execution_time_ms": 123,
+              "tool_name": "search"
             }
+          }
         }
+
         return JSONResponse(content=payload, media_type="application/json")
     
     except Exception:
